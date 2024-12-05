@@ -10,16 +10,14 @@ export default buildModule("SwapRouterContracts", (m) => {
   const FACTORY_V3 = MISC_INFO[chainId]?.POOL_FACTORY!;
   const WRAPPED_NATIVE = MISC_INFO[chainId]?.WRAPPED_NATIVE!;
   const POSITION_MANAGER = MISC_INFO[chainId]?.NONFUNGIBLE_POSITION_MANAGER!;
-
-  // Using address(0) for factoryV2 as specified
-  const FACTORY_V2 = "0x0000000000000000000000000000000000000000";
+  const FACTORY_V2 = MISC_INFO[chainId]?.FACTORY_V2!;
 
   // Deploy MixedRouteQuoterV1
   const mixedRouteQuoter = m.contract(
     "MixedRouteQuoterV1",
     [
       FACTORY_V3,    // _factory (V3)
-      FACTORY_V2,    // _factoryV2 (address(0))
+      FACTORY_V2,    // _factoryV2
       WRAPPED_NATIVE // _WETH9
     ]
   );
@@ -28,7 +26,7 @@ export default buildModule("SwapRouterContracts", (m) => {
   const swapRouter02 = m.contract(
     "SwapRouter02",
     [
-      FACTORY_V2,      // _factoryV2 (address(0))
+      FACTORY_V2,      // _factoryV2
       FACTORY_V3,      // factoryV3
       POSITION_MANAGER, // _positionManager
       WRAPPED_NATIVE   // _WETH9
